@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import api from "../api/apiClient";
+import api from "../api/apiFactus";
 import { useAuth } from "../context/AuthContext";
 
 const LoginModal = ({ show, handleClose }) => {

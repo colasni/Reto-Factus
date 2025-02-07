@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Table, Container, Alert } from "react-bootstrap";
-import apiClient from "../api/apiClient";
+import apiFactus from "../api/apiFactus";
+import apiInvoice from "../api/apiInvoice"
 
 const InvoiceForm = () => {
     const [customer, setCustomer] = useState({
@@ -23,8 +24,8 @@ const InvoiceForm = () => {
         code_reference: "1",
         name: "",
         quantity: 1,
-        price: "",
-        discount_rate: 20,
+        price: 0,
+        discount_rate: 0,
         tax_rate: "19.00",
         unit_measure_id: 70,
         standard_code_id: 1,
@@ -63,7 +64,7 @@ const InvoiceForm = () => {
     const addItem = () => {
         if (newItem.name && newItem.price) {
             setItems([...items, newItem]);
-            setNewItem({ code_reference: "", name: "", quantity: 1, price: "", tax_rate: "19.00", unit_measure_id: "70" });
+            setNewItem({ code_reference: "", name: "", quantity: 1, price: 0, tax_rate: "19.00", unit_measure_id: "70" });
         }
     };
 
@@ -77,9 +78,24 @@ const InvoiceForm = () => {
             setError(null);
             setSuccess(null);
     
-            const response = await apiClient.post("/v1/bills/validate", invoiceData);
+            const response = await apiFactus.post("/v1/bills/validate", invoiceData);
             setSuccess("Factura generada con éxito 🎉");
-    
+            console.log(response.data.data)
+            
+            // Extraer los datos relevantes de la respuesta
+            const { bill, customer} = response.data.data;
+            const invoiceToSave = {
+                nombre: customer.names,
+                numero: bill.number,
+                email: customer.email,
+                total: bill.total,
+                qr: bill.qr
+            };
+
+            // Enviar los datos al backend propio
+            await apiInvoice.post("/api/invoice/addinvoice", invoiceToSave);
+            console.log("Factura almacenada en BD:", invoiceToSave);
+
             localStorage.setItem("lastReferenceCode", referenceCode);
             console.log("Factura enviada:", response.data);
         } catch (err) {
@@ -177,17 +193,17 @@ const InvoiceForm = () => {
                 <h5>Agregar Producto</h5>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control type="text" name="name" value={newItem.name} onChange={handleItemChange} required />
+                    <Form.Control type="text" name="name" value={newItem.name} onChange={handleItemChange}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Cantidad</Form.Label>
-                    <Form.Control type="number" name="quantity" value={newItem.quantity} onChange={handleItemChange} required />
+                    <Form.Control type="number" name="quantity" value={newItem.quantity} onChange={handleItemChange}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Precio</Form.Label>
-                    <Form.Control type="number" name="price" value={newItem.price} onChange={handleItemChange} required />
+                    <Form.Control type="number" name="price" value={newItem.price} onChange={handleItemChange} />
                 </Form.Group>
 
                 <Button variant="primary" onClick={addItem}>Agregar Producto</Button>

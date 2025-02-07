@@ -2,10 +2,14 @@ import express from "express"
 import {config} from 'dotenv'
 import mongoose from "mongoose"
 import {Router} from "express"
+import morgan from 'morgan';
+import cors from 'cors'
 config();
 
 const app = express();
 app.use(express.json());
+app.use(morgan('dev'));
+app.use(cors())
 
 
 //conexión a la base de datos

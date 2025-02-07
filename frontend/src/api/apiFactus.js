@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiClient = axios.create({
+const apiFactus = axios.create({
     baseURL: 'https://api-sandbox.factus.com.co',
     headers: {
         'Content-Type': 'application/json',
@@ -8,7 +8,7 @@ const apiClient = axios.create({
 });
 
 // Interceptor para agregar el token en cada solicitud
-apiClient.interceptors.request.use(
+apiFactus.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("token"); // Recuperamos el token
         
@@ -22,4 +22,4 @@ apiClient.interceptors.request.use(
     }
 );
 
-export default apiClient;
+export default apiFactus;
