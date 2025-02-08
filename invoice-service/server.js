@@ -31,6 +31,7 @@ const invoiceSchema = new mongoose.Schema({
         email: String,
         total: String,
         qr: String,
+        pdf_base_64_encoded: String,
     },{versionKey: false});
 
 //instancia del modelo
@@ -39,8 +40,8 @@ const invoiceModel = new mongoose.model('invoice', invoiceSchema)
 //controlador
 const addInvoice = async(req, res)=>{
     try{
-        const{nombre, numero, email, total, qr} = req.body;
-        const newInvoice = new invoiceModel({nombre, numero, email, total, qr})
+        const{nombre, numero, email, total, qr, pdf_base_64_encoded} = req.body;
+        const newInvoice = new invoiceModel({nombre, numero, email, total, qr, pdf_base_64_encoded})
         await newInvoice.save();
         return res.status(200).json({message: 'factura guardada con exito'}); 
     }catch(error){

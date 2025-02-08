@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Container, Alert } from "react-bootstrap";
+import { Table, Container, Alert, Button } from "react-bootstrap";
 import apiInvoice from "../api/apiInvoice"
 
 const Invoices = () => {
@@ -25,6 +25,21 @@ const Invoices = () => {
         fetchInvoices();
     }, []);
 
+    const handleDownload = (base64Data) => {
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Uint8Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const blob = new Blob([byteNumbers], { type: "application/pdf" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "facturaElectronica.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <Container>
             <h2>Lista de Facturas</h2>
@@ -37,6 +52,7 @@ const Invoices = () => {
                         <th>Email</th>
                         <th>Total</th>
                         <th>QR</th>
+                        <th>pdf</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,6 +66,11 @@ const Invoices = () => {
                                 <a href={invoice.qr} target="_blank" rel="noopener noreferrer">
                                     Ver QR
                                 </a>
+                            </td>
+                            <td>
+                                <Button variant="danger" onClick={() => handleDownload(invoice.pdf_base_64_encoded)}>
+                                    Download
+                                </Button>
                             </td>
                         </tr>
                     ))}

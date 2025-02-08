@@ -78,26 +78,31 @@ const InvoiceForm = () => {
             setError(null);
             setSuccess(null);
     
-            const response = await apiFactus.post("/v1/bills/validate", invoiceData);
+            const createInvoiceResponse = await apiFactus.post("/v1/bills/validate", invoiceData);
             setSuccess("Factura generada con éxito 🎉");
-            console.log(response.data.data)
-            
+            console.log(createInvoiceResponse.data.data)
+
             // Extraer los datos relevantes de la respuesta
-            const { bill, customer} = response.data.data;
+            const { bill, customer} = createInvoiceResponse.data.data;
+            
+            const pdfResponse = await apiFactus.get(`/v1/bills/download-pdf/${bill.number}`)
+            console.log(pdfResponse.data.data.pdf_base_64_encoded)
+            const {pdf_base_64_encoded} = pdfResponse.data.data
+            
             const invoiceToSave = {
                 nombre: customer.names,
                 numero: bill.number,
                 email: customer.email,
                 total: bill.total,
-                qr: bill.qr
+                qr: bill.qr,
+                pdf_base_64_encoded: pdf_base_64_encoded,
             };
-
+            console.log("Factura almacenada en BD:", invoiceToSave);
             // Enviar los datos al backend propio
             await apiInvoice.post("/api/invoice/addinvoice", invoiceToSave);
-            console.log("Factura almacenada en BD:", invoiceToSave);
 
             localStorage.setItem("lastReferenceCode", referenceCode);
-            console.log("Factura enviada:", response.data);
+            console.log("Factura enviada:", createInvoiceResponse.data);
         } catch (err) {
             setError(err.response?.data?.message || "Error al generar la factura");
             console.error("Error al enviar la factura:", err.response);
