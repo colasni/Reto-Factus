@@ -20,10 +20,11 @@ const LoginModal = ({ show, handleClose }) => {
     setError(null);
 
     try {
+      const apienv = import.meta.env
       const response = await api.post("/oauth/token", {
         grant_type: "password",
-        client_id: "9deb6664-f5f0-4d92-a8b7-80d35c902962",
-        client_secret: "nvLYspesQuKw4o26adBCdZBQEiobj0VwdvgSB0ov",
+        client_id: `${apienv.VITE_CLIENT_ID}`,
+        client_secret: `${apienv.VITE_CLIENT_SECRET}`,
         username: credentials.email,
         password: credentials.password,
       });

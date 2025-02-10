@@ -51,7 +51,7 @@ const Invoices = () => {
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Total</th>
-                        <th>QR</th>
+                        <th>Documento</th>
                         <th>pdf</th>
                     </tr>
                 </thead>
@@ -64,7 +64,7 @@ const Invoices = () => {
                             <td>${invoice.total}</td>
                             <td>
                                 <a href={invoice.qr} target="_blank" rel="noopener noreferrer">
-                                    Ver QR
+                                    Ver Documento
                                 </a>
                             </td>
                             <td>
