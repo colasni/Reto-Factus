@@ -7,6 +7,7 @@
 
 <h3>Mi experiencia con este reto fue de mucho aprendizaje, ya que ni siquiera sabia que era una factura electrónica. Creo que mi mayor desafío fue documentarme bien de la api, pero todo fue muy positivo, a pesar de que tuve muchos problemas cuando apenas estaba empezando el reto. </h3>
 <br>
+Video en el cual explicó su funcionamiento: https://youtu.be/rx8Q4QZl_hs?si=2FCgiSgxESHnDHCS
 <br>
 Configuración del Backend
 Instalar dependencias
