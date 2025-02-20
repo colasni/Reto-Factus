@@ -9,6 +9,7 @@
 <br>
 Video en el cual explicó su funcionamiento: https://youtu.be/rx8Q4QZl_hs?si=2FCgiSgxESHnDHCS
 <br>
+<br>
 Configuración del Backend
 Instalar dependencias
 
